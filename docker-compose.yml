@@ -19,12 +19,15 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=edge"
-      - "traefik.http.routers.bible-api.rule=Host(`bible.octotech.az`) && (PathPrefix(`/api`) || PathPrefix(`/uploads`))"
+      - "traefik.http.routers.bible-api.rule=Host(`bibleapp.octotech.az`) && (PathPrefix(`/api`) || PathPrefix(`/uploads`))"
       - "traefik.http.routers.bible-api.entrypoints=web"
       - "traefik.http.routers.bible-api.priority=1500"
       - "traefik.http.services.bible-api.loadbalancer.server.port=5000"
 
   bible-frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
     image: ${FRONTEND_IMAGE:-ghcr.io/aliyabuz25/bible-frontend:latest}
     restart: unless-stopped
     depends_on:
@@ -39,7 +42,7 @@ services:
     labels:
       - "traefik.enable=true"
       - "traefik.docker.network=edge"
-      - "traefik.http.routers.bible.rule=Host(`bible.octotech.az`)"
+      - "traefik.http.routers.bible.rule=Host(`bibleapp.octotech.az`)"
       - "traefik.http.routers.bible.entrypoints=web"
       - "traefik.http.routers.bible.priority=500"
       - "traefik.http.services.bible.loadbalancer.server.port=80"
