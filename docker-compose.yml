@@ -1,0 +1,49 @@
+services:
+  bible-backend:
+    image: ${BACKEND_IMAGE:-ghcr.io/aliyabuz25/bible-backend:latest}
+    restart: unless-stopped
+    environment:
+      PORT: "5000"
+      WEB_DATA_DIR: "/app/data/web-data"
+      ADMIN_PUBLIC_DIR: "/app/data/web-data"
+      UPLOAD_DIR: "/app/data/uploads"
+    volumes:
+      - /datastore/bible/data:/app/data
+    networks:
+      - edge
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1:5000/api/health >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=edge"
+      - "traefik.http.routers.bible-api.rule=Host(`bible.octotech.az`) && (PathPrefix(`/api`) || PathPrefix(`/uploads`))"
+      - "traefik.http.routers.bible-api.entrypoints=web"
+      - "traefik.http.routers.bible-api.priority=1500"
+      - "traefik.http.services.bible-api.loadbalancer.server.port=5000"
+
+  bible-frontend:
+    image: ${FRONTEND_IMAGE:-ghcr.io/aliyabuz25/bible-frontend:latest}
+    restart: unless-stopped
+    depends_on:
+      - bible-backend
+    networks:
+      - edge
+    healthcheck:
+      test: ["CMD-SHELL", "wget -q -O - http://127.0.0.1/ >/dev/null 2>&1 || exit 1"]
+      interval: 15s
+      timeout: 5s
+      retries: 8
+    labels:
+      - "traefik.enable=true"
+      - "traefik.docker.network=edge"
+      - "traefik.http.routers.bible.rule=Host(`bible.octotech.az`)"
+      - "traefik.http.routers.bible.entrypoints=web"
+      - "traefik.http.routers.bible.priority=500"
+      - "traefik.http.services.bible.loadbalancer.server.port=80"
+
+networks:
+  edge:
+    external: true

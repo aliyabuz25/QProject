@@ -1,0 +1,9 @@
+{
+  "appId": "com.haldun.kidsbiblestories",
+  "appName": "Kids Bible Stories",
+  "webDir": "dist",
+  "server": {
+    "cleartext": true,
+    "androidScheme": "http"
+  }
+}

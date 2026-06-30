@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--
+        Google Sign-In ID token audience.
+
+        Preferred setup:
+        - Put the real Firebase/Google `google-services.json` in android/app/.
+        - The Google Services Gradle plugin will generate @string/default_web_client_id.
+
+        Manual fallback:
+        - Put a Web OAuth Client ID here, for example:
+          1234567890-abcxyz.apps.googleusercontent.com
+
+        Do not put an Android/installed OAuth client ID here. Native Android
+        Google Sign-In still needs a separate Android OAuth client configured in
+        Google Cloud with package com.haldun.kidsbiblestories and this app's SHA-1.
+    -->
+    <string name="server_client_id" translatable="false">50430621354-nchkp7t573bhqmlk1i0os73vtq4l3m1s.apps.googleusercontent.com</string>
+</resources>
