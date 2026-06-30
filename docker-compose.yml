@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   bible-backend:
     image: ${BACKEND_IMAGE:-ghcr.io/aliyabuz25/bible-backend:latest}
